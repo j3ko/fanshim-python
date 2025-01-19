@@ -77,7 +77,11 @@ fi
 
 cd library
 
-if [[ $CODENAME != "bullseye" ]]; then
+if [ -f "/usr/bin/python3" ]; then
+	printf "Installing for Python 3..\n"
+	apt_pkg_install "${PY3_DEPS[@]}"
+	python3 setup.py install
+elif [[ $CODENAME != "bullseye" ]]; then
 	printf "Installing for Python 2..\n"
 
 	printf "Checking for rpi.gpio>=0.7.0 (for Pi 4 support)\n"
@@ -98,12 +102,6 @@ EOF
 
 	apt_pkg_install "${PY2_DEPS[@]}"
 	python setup.py install
-fi
-
-if [ -f "/usr/bin/python3" ]; then
-	printf "Installing for Python 3..\n"
-	apt_pkg_install "${PY3_DEPS[@]}"
-	python3 setup.py install
 fi
 
 cd ..
